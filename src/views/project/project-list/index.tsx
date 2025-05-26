@@ -34,6 +34,8 @@ const ProjectList: FC = () => {
             dataIndex: 'address',
             align: 'center',
             ellipsis: true,
+            fixed: true,
+            width: 200,
             render: (address, row) => {
                 return <>
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center' }}>
@@ -52,6 +54,7 @@ const ProjectList: FC = () => {
             title: '项目名称',
             dataIndex: 'name',
             align: 'center',
+            width: 200,
             render: (name, record) => {
                 const content = (
                     <div style={{ width: '300px' }}>
@@ -69,8 +72,82 @@ const ProjectList: FC = () => {
             title: '创建时间',
             dataIndex: 'createdAt',
             align: 'center',
+            width: 200,
             render: (createdAt) => {
                 return <span>{dayjs(createdAt).format('YYYY-MM-DD HH:mm:ss')}</span>
+            }
+        },
+        {
+            title: '市值',
+            dataIndex: 'marketCap',
+            align: 'center',
+            width: 200,
+            render: (marketCap) => {
+                if (marketCap < 20000) {
+                    return <Popover content={<div>市值小于20k</div>}>
+                        <Tag color="red" style={{ maxWidth: '100%', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>${formatNumber(marketCap)}</Tag>
+                    </Popover>
+                } else {
+                    return <span>${formatNumber(marketCap)}</span>
+                }
+            }
+        },
+        {
+            title: '流动性',
+            dataIndex: 'liquidity',
+            align: 'center',
+            width: 200,
+            render: (liquidity, record) => {
+                if (liquidity < 1000 && !dayjs(record.createdAt).isBefore(dayjs().subtract(1, 'day'))) {
+                    return <Popover content={<div>流动性小于1k</div>}>
+                        <Tag color="red" style={{ maxWidth: '100%', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>${formatNumber(liquidity)}</Tag>
+                    </Popover>
+                } else if (liquidity < 5000) {
+                    return <Popover content={<div>流动性小于5k</div>}>
+                        <Tag color="red" style={{ maxWidth: '100%', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>${formatNumber(liquidity)}</Tag>
+                    </Popover>
+                } else {
+                    return <span>${formatNumber(liquidity)}</span>
+                }
+            }
+        },
+        {
+            title: '价格',
+            dataIndex: 'price',
+            align: 'center',
+            width: 200,
+            render: (price) => {
+                return <span>${formatNumber(price)}</span>
+            }
+        },
+        {
+            title: '24h交易数',
+            dataIndex: 'trade24h',
+            align: 'center',
+            width: 200,
+            render: (trade24h, record) => {
+                if (trade24h < 10 && dayjs(record.createdAt).isBefore(dayjs().subtract(1, 'day'))) {
+                    return <Popover content={<div>24h交易数小于10</div>}>
+                        <Tag color="red" style={{ maxWidth: '100%', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{formatNumber(trade24h)}</Tag>
+                    </Popover>
+                } else {
+                    return <span>{formatNumber(trade24h)}</span>
+                }
+            }
+        },
+        {
+            title: '24h交易额度',
+            dataIndex: 'volume24h',
+            align: 'center',
+            width: 200,
+            render: (volume24h, record) => {
+                if (volume24h < 500 && dayjs(record.createdAt).isBefore(dayjs().subtract(1, 'day'))) {
+                    return <Popover content={<div>24h交易额度小于500</div>}>
+                        <Tag color="red" style={{ maxWidth: '100%', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>${formatNumber(volume24h)}</Tag>
+                    </Popover>
+                } else {
+                    return <span>${formatNumber(volume24h)}</span>
+                }
             }
         },
         {
@@ -78,6 +155,7 @@ const ProjectList: FC = () => {
             dataIndex: 'websiteUrl',
             align: 'center',
             ellipsis: true,
+            width: 200,
             render: (websiteUrl) => {
                 return <a href={websiteUrl} target='_blank' rel='noreferrer'>{websiteUrl}</a>
             }
@@ -87,6 +165,7 @@ const ProjectList: FC = () => {
             dataIndex: 'xUrl',
             align: 'center',
             ellipsis: true,
+            width: 200,
             render: (xUrl) => {
                 return <a href={xUrl} target='_blank' rel='noreferrer'>{xUrl}</a>
             }
@@ -96,6 +175,8 @@ const ProjectList: FC = () => {
             title: '操作',
             key: 'status',
             align: 'center',
+            fixed: 'right',
+            width: 90,
             render: (_, record: API.ProjectType) => (
                 <Space>
                     <Button type="primary" onClick={() => { handleEdit(record.address) }}>
@@ -116,6 +197,29 @@ const ProjectList: FC = () => {
         setTableQuery({ ...tableQuery, page: 1 })
         fetchData(1, query)
     }, [status])
+
+    function formatNumber(number: number) {
+        if (!number) {
+            return 0
+        }
+        if (number < 1000) {
+            // 如果是整数，直接返回
+            if (number % 1 === 0) {
+                return number
+            } else if (number < 1) {
+                return (number / 1).toFixed(6);
+            } else {
+                return (number / 1).toFixed(2);
+            }
+        }
+        const suffixes = ['', 'K', 'M', 'B', 'T'];
+        let index = 0;
+        while (number >= 1000 && index < suffixes.length - 1) {
+            number /= 1000;
+            index++;
+        }
+        return (number / 1).toFixed(2) + suffixes[index];
+    }
 
     async function fetchData(page?: number, query?: string) {
         if (tableLoading) return
@@ -234,6 +338,7 @@ const ProjectList: FC = () => {
                         showQuickJumper: true,
                         onChange: handlePageChange
                     }}
+                    scroll={{ x: 1000 }}
                 />
                 <Modal
                     open={showAddTable}
