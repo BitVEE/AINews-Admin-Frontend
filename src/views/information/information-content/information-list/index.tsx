@@ -36,12 +36,15 @@ const InformationList: FC = () => {
       title: '新闻ID',
       dataIndex: 'id',
       align: 'center',
-      sorter: true
+      sorter: true,
+      width: 100,
+      fixed: 'left'
     },
     {
       title: '资讯标题',
       dataIndex: 'titleZh',
       align: 'center',
+      width: 300,
       render: (_, record: any) => {
         const content = (
           <div style={{ width: '300px' }}>
@@ -59,6 +62,7 @@ const InformationList: FC = () => {
       title: '创建人',
       dataIndex: 'author',
       align: 'center',
+      width: 100,
       render: (author) => {
         return (
           <Tag color='blue'>{author}</Tag>
@@ -71,7 +75,8 @@ const InformationList: FC = () => {
       align: 'center',
       render: (createdAt) => {
         return <span>{dayjs(createdAt).format('YYYY-MM-DD HH:mm:ss')}</span>
-      }
+      },
+      width: 200
     },
     {
       title: '更新时间',
@@ -79,7 +84,8 @@ const InformationList: FC = () => {
       align: 'center',
       render: (updatedAt) => {
         return <span>{dayjs(updatedAt).format('YYYY-MM-DD HH:mm:ss')}</span>
-      }
+      },
+      width: 200
     },
     {
       title: '是否选为精选资讯',
@@ -87,7 +93,8 @@ const InformationList: FC = () => {
       align: 'center',
       render: (isStar, record) => (
         <Switch checkedChildren="是" unCheckedChildren="否" checked={isStar} onClick={() => handleStarChange(isStar, record)} />
-      )
+      ),
+      width: 150
     },
     {
       title: '新闻禁用状态',
@@ -95,12 +102,15 @@ const InformationList: FC = () => {
       align: 'center',
       render: (isActive, record) => (
         <Switch checkedChildren="上线中" unCheckedChildren="已禁用" checked={isActive} onClick={() => handleSwitchChange(isActive, record)} />
-      )
+      ),
+      width: 150
     },
     {
       title: '操作',
       key: 'action',
       align: 'center',
+      fixed: 'right',
+      width: 240,
       render: (_, record: any) => (
         <Space>
           <Button type="dashed">
@@ -305,14 +315,14 @@ const InformationList: FC = () => {
   return (
     <>
       <Card bordered={false}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', overflow: 'scroll', padding: '10px 0', gap: '0 10px' }}>
           <Space>
             <Button type='primary'><PlusOutlined />
               <Link to={`/information/information-content/information-add`} state={{ id: "add" }}>新增资讯</Link>
             </Button>
             <Button type='primary' danger onClick={() => { handleDelete(0) }}><DeleteOutlined />批量删除</Button>
             <Space>
-              <h3>选择语言:</h3>
+              <h3 style={{ whiteSpace: 'nowrap' }}>选择语言:</h3>
               <Select value={selectLanguage} onChange={(value) => { setSelectLanguage(value) }}>
                 <Select.Option value="en">英文</Select.Option>
                 <Select.Option value="zhHans">简体中文</Select.Option>
@@ -324,8 +334,9 @@ const InformationList: FC = () => {
           </Space>
           <Space size={10}>
             <Space>
-              <h3>筛选日期：</h3>
+              <h3 style={{ whiteSpace: 'nowrap' }}>筛选日期：</h3>
               <RangePicker
+                style={{ minWidth: '250px' }}
                 defaultValue={[dayjs(selectDateStart), dayjs(selectDateEnd)]}
                 value={[dayjs(selectDateStart), dayjs(selectDateEnd)]}
                 format='YYYY-MM-DD'
@@ -344,8 +355,8 @@ const InformationList: FC = () => {
               />
             </Space>
             <Space>
-              <h3>搜索：</h3>
-              <Input value={searchTitle} onChange={(e) => { setSearchTitle(e.target.value) }} placeholder='请输入搜索内容' />
+              <h3 style={{ whiteSpace: 'nowrap' }}>搜索：</h3>
+              <Input style={{ minWidth: '200px' }} value={searchTitle} onChange={(e) => { setSearchTitle(e.target.value) }} placeholder='请输入搜索内容' />
               <Button type='primary' onClick={() => { handleSearch() }}>筛选&搜索</Button>
               <Button type='primary' danger onClick={() => { handleReset() }}>清除 筛选&搜索</Button>
             </Space>
@@ -360,6 +371,7 @@ const InformationList: FC = () => {
           columns={columns}
           dataSource={tableData}
           loading={tableLoading}
+          scroll={{ x: 'max-content', y: 'calc(100vh - 400px)' }}
           pagination={{
             current: tableQuery.page,
             pageSize: tableQuery.size,

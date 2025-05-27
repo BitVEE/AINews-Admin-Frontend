@@ -24,7 +24,9 @@ const NewsFlashSourceList: FC = () => {
       title: 'ID',
       dataIndex: 'id',
       align: 'center',
-      sorter: true
+      sorter: true,
+      width: 100,
+      fixed: 'left'
     },
     {
       title: '上次采集时间',
@@ -32,17 +34,20 @@ const NewsFlashSourceList: FC = () => {
       align: 'center',
       render: (endTime) => {
         return <span>{dayjs(endTime).format('YYYY-MM-DD HH:mm:ss')}</span>
-      }
+      },
+      width: 200
     },
     {
       title: '上次采集数量',
       dataIndex: 'itemsCount',
-      align: 'center'
+      align: 'center',
+      width: 150
     },
     {
       title: '采集总数',
       dataIndex: 'totalCount',
-      align: 'center'
+      align: 'center',
+      width: 100
     },
     {
       title: '来源地址',
@@ -52,7 +57,8 @@ const NewsFlashSourceList: FC = () => {
         return (
           <a style={{ color: 'blue' }}>{taskId}</a>
         )
-      }
+      },
+      width: 200
     },
     {
       title: '接口状态',
@@ -60,7 +66,9 @@ const NewsFlashSourceList: FC = () => {
       align: 'center',
       render: (status) => {
         return status === 'success' ? <Tag color="green">正常</Tag> : status === 'failed' ? <Tag color="red">异常</Tag> : <Tag color="orange">采集中</Tag>
-      }
+      },
+      fixed: 'right',
+      width: 100
     }
   ]
   // change page
@@ -92,11 +100,11 @@ const NewsFlashSourceList: FC = () => {
   return (
     <>
       <Card bordered={false}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', overflow: 'scroll', padding: '10px 0', gap: '0 10px' }}>
           <Button type='primary'>执行采集任务</Button>
           <Space>
-            <h3>搜索：</h3>
-            <Input placeholder='请输入搜索内容' value={searchValue} onChange={(e) => setSearchValue(e.target.value)} />
+            <h3 style={{ whiteSpace: 'nowrap' }}>搜索：</h3>
+            <Input style={{ minWidth: '200px' }} placeholder='请输入搜索内容' value={searchValue} onChange={(e) => setSearchValue(e.target.value)} />
             <Button type='primary' onClick={() => fetchData(searchValue)}>搜索</Button>
             <Button type='primary' danger onClick={() => setSearchValue('')}>重置</Button>
           </Space>
@@ -118,6 +126,7 @@ const NewsFlashSourceList: FC = () => {
             showQuickJumper: true,
             onChange: handlePageChange
           }}
+          scroll={{ x: 'max-content', y: 'calc(100vh - 400px)' }}
         />
       </Card>
     </>

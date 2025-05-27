@@ -32,7 +32,9 @@ const InformationLabelList: FC = () => {
       title: '标签ID',
       dataIndex: 'id',
       align: 'center',
-      sorter: true
+      sorter: true,
+      width: 100,
+      fixed: 'left'
     },
     {
       title: '标签名称',
@@ -42,7 +44,8 @@ const InformationLabelList: FC = () => {
         return (
           <Tag color="orange">{name}</Tag>
         )
-      }
+      },
+      width: 100
     },
     {
       title: '创建时间',
@@ -50,7 +53,8 @@ const InformationLabelList: FC = () => {
       align: 'center',
       render: (createTime) => {
         return <span>{dayjs(createTime).format('YYYY-MM-DD HH:mm:ss')}</span>
-      }
+      },
+      width: 200
     },
     {
       title: '更新时间',
@@ -58,7 +62,8 @@ const InformationLabelList: FC = () => {
       align: 'center',
       render: (updateTime) => {
         return <span>{dayjs(updateTime).format('YYYY-MM-DD HH:mm:ss')}</span>
-      }
+      },
+      width: 200
     },
     {
       title: '标签禁用状态',
@@ -66,7 +71,8 @@ const InformationLabelList: FC = () => {
       align: 'center',
       render: (isActive, record) => (
         <Switch checkedChildren="上线中" unCheckedChildren="已禁用" checked={isActive} onClick={() => handleSwitchChange(isActive, record)} />
-      )
+      ),
+      width: 100
     },
     {
       title: '操作',
@@ -76,7 +82,9 @@ const InformationLabelList: FC = () => {
         <Space>
           <Button type='primary' onClick={() => { handleEdit(record.id) }}>修改</Button>
         </Space>
-      )
+      ),
+      width: 100,
+      fixed: 'right'
     }
   ]
 
@@ -215,13 +223,13 @@ const InformationLabelList: FC = () => {
   return (
     <>
       <Card bordered={false}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', overflow: 'scroll', padding: '10px 0', gap: '10px' }}>
           <Space>
             <Button type='primary' onClick={() => { setShowAddTable(true); form.resetFields() }}><PlusOutlined />新增标签</Button>
           </Space>
           <Space>
-            <h3>搜索：</h3>
-            <Input placeholder='请输入搜索内容' value={searchValue} onChange={(e) => { setSearchValue(e.target.value) }} />
+            <h3 style={{ whiteSpace: 'nowrap' }}>搜索：</h3>
+            <Input style={{ minWidth: '200px' }} placeholder='请输入搜索内容' value={searchValue} onChange={(e) => { setSearchValue(e.target.value) }} />
             <Button type='primary' onClick={() => { fetchData(searchValue) }}>搜索</Button>
             <Button type='primary' danger onClick={() => { setSearchValue(''); fetchData('') }}>重置</Button>
           </Space>
@@ -234,6 +242,7 @@ const InformationLabelList: FC = () => {
           columns={columns}
           dataSource={tableData}
           loading={tableLoading}
+          scroll={{ x: 'max-content', y: 'calc(100vh - 400px)' }}
           pagination={{
             current: tableQuery.page,
             pageSize: tableQuery.size,

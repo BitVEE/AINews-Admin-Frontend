@@ -36,7 +36,9 @@ const AdList: FC = () => {
       title: '广告ID',
       dataIndex: 'id',
       align: 'center',
-      sorter: true
+      sorter: true,
+      width: 50,
+      fixed: 'left'
     },
     {
       title: '广告标题',
@@ -44,7 +46,8 @@ const AdList: FC = () => {
       align: 'center',
       render: (title) => {
         return <span>{title}</span>
-      }
+      },
+      width: 200,
     },
     {
       title: '创建时间',
@@ -52,7 +55,8 @@ const AdList: FC = () => {
       align: 'center',
       render: (createdAt) => {
         return <span>{dayjs(createdAt).format('YYYY-MM-DD HH:mm:ss')}</span>
-      }
+      },
+      width: 250
     },
     {
       title: '更新时间',
@@ -60,7 +64,8 @@ const AdList: FC = () => {
       align: 'center',
       render: (updateAt) => {
         return <span>{dayjs(updateAt).format('YYYY-MM-DD HH:mm:ss')}</span>
-      }
+      },
+      width: 250
     },
     {
       title: '广告图片',
@@ -68,7 +73,8 @@ const AdList: FC = () => {
       align: 'center',
       render: (imageUrl) => {
         return <img src={imageUrl} alt='广告图片' style={{ width: '100px', height: 'auto' }} />
-      }
+      },
+      width: 250
     },
     {
       title: '广告状态',
@@ -76,12 +82,15 @@ const AdList: FC = () => {
       align: 'center',
       render: (isActive, record) => (
         <Switch checkedChildren="上线中" unCheckedChildren="已禁用" checked={isActive} onClick={() => handleSwitchStatus(isActive, record)} />
-      )
+      ),
+      width: 250
     },
     {
       title: '操作',
       key: 'action',
       align: 'center',
+      width: 100,
+      fixed: 'right',
       render: (_, record: API.AdType) => (
         <Space>
           <Button type="primary" onClick={() => { handleEdit(record.id) }}>
@@ -293,11 +302,11 @@ const AdList: FC = () => {
   return (
     <>
       <Card bordered={false}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', overflow: 'scroll', padding: '10px 0', gap: '10px' }}>
           <Space>
             <Button type='primary' onClick={() => { addInformationSpecialTopic() }}><PlusOutlined />新增广告</Button>
             <Space>
-              <h3>选择语言:</h3>
+              <h3 style={{ whiteSpace: 'nowrap' }}>选择语言:</h3>
               <Select value={selectLanguage} onChange={(value) => { setSelectLanguage(value) }}>
                 <Select.Option value="">全部</Select.Option>
                 <Select.Option value="zh_hans">简体中文</Select.Option>
@@ -326,6 +335,7 @@ const AdList: FC = () => {
             showQuickJumper: true,
             onChange: handlePageChange
           }}
+          scroll={{ x: 'max-content', y: 'calc(100vh - 400px)' }}
         />
         <Modal
           open={showAddTable}

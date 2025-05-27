@@ -85,12 +85,15 @@ const NewsFlashList: FC = () => {
       title: '快讯ID',
       dataIndex: 'id',
       align: 'center',
-      sorter: true
+      sorter: true,
+      width: 100,
+      fixed: 'left'
     },
     {
       title: '快讯标题',
       dataIndex: 'titleZh',
       align: 'center',
+      width: 300,
       render: (_, record: any) => {
         const content = (
           <div style={{ width: '300px', overflow: 'scroll', height: '300px' }}>
@@ -110,7 +113,8 @@ const NewsFlashList: FC = () => {
       align: 'center',
       render: (createdAt) => {
         return <span>{dayjs(createdAt).format('YYYY-MM-DD HH:mm:ss:SSS')}</span>
-      }
+      },
+      width: 250
     },
     {
       title: '更新时间',
@@ -118,7 +122,8 @@ const NewsFlashList: FC = () => {
       align: 'center',
       render: (updatedAt) => {
         return <span>{dayjs(updatedAt).format('YYYY-MM-DD HH:mm:ss:SSS')}</span>
-      }
+      },
+      width: 250
     },
     {
       title: '快讯来源',
@@ -126,7 +131,8 @@ const NewsFlashList: FC = () => {
       align: 'center',
       render: (source) => {
         return <a href={source} style={{ color: 'blue' }} target='_blank'>{source}</a>
-      }
+      },
+      width: 150
     },
     {
       title: '原文地址',
@@ -135,7 +141,8 @@ const NewsFlashList: FC = () => {
       ellipsis: true,
       render: (link) => {
         return <a href={link} style={{ color: 'blue' }} target='_blank'>{link}</a>
-      }
+      },
+      width: 200
     },
     {
       title: '快讯状态',
@@ -143,12 +150,14 @@ const NewsFlashList: FC = () => {
       align: 'center',
       render: (isActive, record) => (
         <Switch checkedChildren="上线中" unCheckedChildren="已禁用" checked={isActive} onClick={() => handleSwitchChange(isActive, record)} />
-      )
+      ),
+      width: 150
     },
     {
       title: '分数',
       dataIndex: 'score',
       align: 'center',
+      width: 100,
       sorter: {
         compare: (a: API.NewsFlashInfoType, b: API.NewsFlashInfoType) => {
           return a.score - b.score
@@ -163,6 +172,8 @@ const NewsFlashList: FC = () => {
       title: '操作',
       key: 'action',
       align: 'center',
+      width: 240,
+      fixed: 'right',
       render: (_, record: any) => (
         <Space wrap>
           <Button type="dashed" onClick={() => handleEdit(record)}>
@@ -300,11 +311,11 @@ const NewsFlashList: FC = () => {
   return (
     <>
       <Card bordered={false}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', overflow: 'scroll', padding: '10px 0', gap: '10px' }}>
           <Space>
             <Button type='primary' danger onClick={() => { handleDelete(0) }}><DeleteOutlined />批量删除</Button>
             <Space>
-              <h3>选择语言:</h3>
+              <h3 style={{ whiteSpace: 'nowrap' }}>选择语言:</h3>
               <Select value={selectLanguage} onChange={(value) => { setSelectLanguage(value) }}>
                 <Select.Option value="en">英文</Select.Option>
                 <Select.Option value="zhHans">简体中文</Select.Option>
@@ -316,11 +327,12 @@ const NewsFlashList: FC = () => {
           </Space>
           <Space size={10}>
             <Space>
-              <h3>筛选日期：</h3>
+              <h3 style={{ whiteSpace: 'nowrap' }}>筛选日期：</h3>
               <RangePicker
                 defaultValue={[dayjs(startDate), dayjs(endDate)]}
                 value={[dayjs(startDate), dayjs(endDate)]}
                 format='YYYY-MM-DD'
+                style={{ minWidth: '250px' }}
                 onChange={(value) => {
                   if (value) {
                     setStartDate(value[0]?.format('YYYY-MM-DD') || '')
@@ -333,8 +345,8 @@ const NewsFlashList: FC = () => {
               />
             </Space>
             <Space>
-              <h3>搜索：</h3>
-              <Input placeholder='请输入搜索内容' onChange={(e) => { setSearchValue(e.target.value) }} value={searchValue} />
+              <h3 style={{ whiteSpace: 'nowrap' }}>搜索：</h3>
+              <Input style={{ minWidth: '200px' }} placeholder='请输入搜索内容' onChange={(e) => { setSearchValue(e.target.value) }} value={searchValue} />
               <Button type='primary' onClick={() => handleSearch()}>搜索&筛选</Button>
               <Button type='primary' danger onClick={() => handleReset()}>清除 搜索&筛选</Button>
             </Space>
@@ -358,6 +370,7 @@ const NewsFlashList: FC = () => {
             showQuickJumper: true,
             onChange: handlePageChange
           }}
+          scroll={{ x: 'max-content', y: 'calc(100vh - 400px)' }}
         />
         <Modal
           open={modalVisibel}

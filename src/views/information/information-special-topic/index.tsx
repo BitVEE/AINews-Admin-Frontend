@@ -42,7 +42,9 @@ const InformationSpecialTopicList: FC = () => {
       title: '专题ID',
       dataIndex: 'id',
       align: 'center',
-      sorter: true
+      sorter: true,
+      width: 100,
+      fixed: 'left'
     },
     {
       title: '专题名称',
@@ -59,7 +61,8 @@ const InformationSpecialTopicList: FC = () => {
             <Tag color="purple">{selectLanguage === 'zhHans' ? record.nameZhHans : selectLanguage === 'zh' ? nameZh : selectLanguage === 'en' ? record.nameEn : selectLanguage === 'ko' ? record.nameKr : selectLanguage === 'es' ? record.nameEs : ''}</Tag>
           </Popover>
         )
-      }
+      },
+      width: 100
     },
     {
       title: '创建时间',
@@ -67,7 +70,8 @@ const InformationSpecialTopicList: FC = () => {
       align: 'center',
       render: (createdAt) => {
         return <span>{dayjs(createdAt).format('YYYY-MM-DD HH:mm:ss')}</span>
-      }
+      },
+      width: 200
     },
     {
       title: '更新时间',
@@ -75,20 +79,23 @@ const InformationSpecialTopicList: FC = () => {
       align: 'center',
       render: (updateAt) => {
         return <span>{dayjs(updateAt).format('YYYY-MM-DD HH:mm:ss')}</span>
-      }
+      },
+      width: 200
     },
     {
       title: '专题封面',
       dataIndex: 'backgroundImageUrl',
       align: 'center',
       render: (backgroundImageUrl) => {
-        return <img src={backgroundImageUrl} alt='专题封面' style={{ width: '100px', height: 'auto' }} />
-      }
+        return <img src={backgroundImageUrl} alt='专题封面' style={{ width: '100%', height: 'auto' }} />
+      },
+      width: 150
     },
     {
       title: '专题禁用状态',
       dataIndex: 'isActive',
       align: 'center',
+      width: 150,
       render: (isActive, record) => (
         <Switch checkedChildren="上线中" unCheckedChildren="已禁用" checked={isActive} onClick={() => handleSwitchStatus(isActive, record)} />
       )
@@ -103,7 +110,9 @@ const InformationSpecialTopicList: FC = () => {
             修改
           </Button>
         </Space>
-      )
+      ),
+      width: 100,
+      fixed: 'right'
     }
   ]
 
@@ -302,11 +311,11 @@ const InformationSpecialTopicList: FC = () => {
   return (
     <>
       <Card bordered={false}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', overflow: 'scroll', padding: '10px 0', gap: '10px' }}>
           <Space>
             <Button type='primary' onClick={() => { addInformationSpecialTopic() }}><PlusOutlined />新增专题</Button>
             <Space>
-              <h3>选择语言:</h3>
+              <h3 style={{ whiteSpace: 'nowrap' }}>选择语言:</h3>
               <Select value={selectLanguage} onChange={(value) => { setSelectLanguage(value) }}>
                 <Select.Option value="en">英文</Select.Option>
                 <Select.Option value="zhHans">简体中文</Select.Option>
@@ -317,8 +326,8 @@ const InformationSpecialTopicList: FC = () => {
             </Space>
           </Space>
           <Space>
-            <h3>搜索：</h3>
-            <Input placeholder='请输入搜索内容' onChange={(e) => { setSearchValues(e.target.value) }} />
+            <h3 style={{ whiteSpace: 'nowrap' }}>搜索：</h3>
+            <Input style={{ minWidth: '200px' }} placeholder='请输入搜索内容' onChange={(e) => { setSearchValues(e.target.value) }} />
             <Button type='primary' onClick={() => { fetchData(searchValues) }}>搜索</Button>
             <Button type='primary' danger onClick={() => { setSearchValues('') }}>重置</Button>
           </Space>
@@ -331,6 +340,7 @@ const InformationSpecialTopicList: FC = () => {
           columns={columns}
           dataSource={tableData}
           loading={tableLoading}
+          scroll={{ x: 'max-content', y: 'calc(100vh - 400px)' }}
           pagination={{
             current: tableQuery.page,
             pageSize: tableQuery.size,
