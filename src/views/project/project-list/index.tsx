@@ -176,7 +176,7 @@ const ProjectList: FC = () => {
             key: 'status',
             align: 'center',
             fixed: 'right',
-            width: 90,
+            width: 100,
             render: (_, record: API.ProjectType) => (
                 <Space>
                     <Button type="primary" onClick={() => { handleEdit(record.address) }}>
@@ -292,10 +292,10 @@ const ProjectList: FC = () => {
     return (
         <>
             <Card bordered={false}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', overflow: 'scroll', padding: '10px 0', gap: '10px' }}>
                     <Space>
                         <Space>
-                            <h3>选择状态:</h3>
+                            <h3 style={{ whiteSpace: 'nowrap' }}>选择状态:</h3>
                             <Select value={status} onChange={(value) => { setStatus(value) }}>
                                 <Select.Option value={0}>已忽略</Select.Option>
                                 <Select.Option value={1}>新建</Select.Option>
@@ -304,7 +304,7 @@ const ProjectList: FC = () => {
                             </Select>
                         </Space>
                         <Space>
-                            <h3>选择语言:</h3>
+                            <h3 style={{ whiteSpace: 'nowrap' }}>选择语言:</h3>
                             <Select value={selectLanguage} onChange={(value) => { setSelectLanguage(value) }}>
                                 <Select.Option value="en">英文</Select.Option>
                                 <Select.Option value="zhHans">简体中文</Select.Option>
@@ -314,8 +314,8 @@ const ProjectList: FC = () => {
                             </Select>
                         </Space>
                         <Space>
-                            <h3>搜索：</h3>
-                            <Input placeholder='请输入搜索内容' value={query} onChange={(e) => setQuery(e.target.value)} />
+                            <h3 style={{ whiteSpace: 'nowrap' }}>搜索：</h3>
+                            <Input style={{ minWidth: '200px' }} placeholder='请输入搜索内容' value={query} onChange={(e) => setQuery(e.target.value)} />
                             <Button type='primary' onClick={() => fetchData(1, query)}>搜索</Button>
                             <Button type='primary' danger onClick={() => { setQuery(''); }}>重置</Button>
                         </Space>
@@ -338,7 +338,7 @@ const ProjectList: FC = () => {
                         showQuickJumper: true,
                         onChange: handlePageChange
                     }}
-                    scroll={{ x: 1000 }}
+                    scroll={{ x: 'max-content', y: 'calc(100vh - 400px)' }}
                 />
                 <Modal
                     open={showAddTable}

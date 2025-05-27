@@ -29,12 +29,15 @@ const UserList: FC = () => {
       title: 'ID',
       dataIndex: 'id',
       align: 'center',
+      width: 50,
+      fixed: 'left',
       sorter: (a, b) => a.id - b.id
     },
     {
       title: '用户名',
       dataIndex: 'nickname',
       align: 'center',
+      width: 150,
       render: (nickname) => {
         return <Tag color='blue'>{nickname}</Tag>
       }
@@ -42,41 +45,48 @@ const UserList: FC = () => {
     {
       title: 'UUID',
       dataIndex: 'uuid',
-      align: 'center'
+      align: 'center',
+      width: 150
     },
     {
       title: '邮箱',
       dataIndex: 'email',
-      align: 'center'
+      align: 'center',
+      width: 300
     },
     {
       title: 'vsys钱包地址',
       dataIndex: 'vsysAddress',
       align: 'center',
-      ellipsis: true
+      ellipsis: true,
+      width: 300
     },
     {
       title: 'solana钱包地址',
       dataIndex: 'solanaAddress',
       align: 'center',
-      ellipsis: true
+      ellipsis: true,
+      width: 300
     },
     {
       title: 'ton钱包地址',
       dataIndex: 'tonAddress',
       align: 'center',
-      ellipsis: true
+      ellipsis: true,
+      width: 300
     },
     {
       title: 'phantom钱包地址',
       dataIndex: 'phantomAddress',
       align: 'center',
-      ellipsis: true
+      ellipsis: true,
+      width: 300
     },
     {
       title: '注册时间',
       dataIndex: 'createdAt',
       align: 'center',
+      width: 200,
       sorter: (a, b) => a.createdAt.localeCompare(b.createdAt),
       render: (createdAt) => {
         return <span>{dayjs(createdAt).format('YYYY-MM-DD HH:mm:ss')}</span>
@@ -86,6 +96,8 @@ const UserList: FC = () => {
       title: '更新时间',
       dataIndex: 'updatedAt',
       align: 'center',
+      width: 200,
+      sorter: (a, b) => a.updatedAt.localeCompare(b.updatedAt),
       render: (updatedAt) => {
         return <span>{dayjs(updatedAt).format('YYYY-MM-DD HH:mm:ss')}</span>
       }
@@ -93,12 +105,14 @@ const UserList: FC = () => {
     {
       title: '活跃天数',
       dataIndex: 'actionDays',
-      align: 'center'
+      align: 'center',
+      width: 100
     },
     {
       title: '今日活跃',
       dataIndex: 'actionToday',
       align: 'center',
+      width: 100,
       render: (actionToday) => {
         return actionToday ? <Tag color='green'>是</Tag> : <Tag color='red'>否</Tag>
       }
@@ -107,6 +121,8 @@ const UserList: FC = () => {
       title: '操作',
       dataIndex: 'isActive',
       align: 'center',
+      width: 100,
+      fixed: 'right',
       render: (isActive, record) => {
         return isActive ? <Button type='primary' danger onClick={() => handleBatchBlack(record.id)}>拉黑</Button> : <Button type='primary' ghost onClick={() => handleBatchRestore(record.id)}>恢复</Button>
       }
@@ -216,11 +232,11 @@ const UserList: FC = () => {
   return (
     <>
       <Card bordered={false}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', overflow: 'scroll', padding: '10px 0', gap: '10px' }}>
           <Button type='primary' onClick={() => handleBatchBlack(0)}>批量拉黑</Button>
           <Space>
-            <h3>搜索：</h3>
-            <Input placeholder='请输入搜索内容' value={searchValue} onChange={(e) => setSearchValue(e.target.value)} />
+            <h3 style={{ whiteSpace: 'nowrap' }}>搜索：</h3>
+            <Input style={{ minWidth: '200px' }} placeholder='请输入搜索内容' value={searchValue} onChange={(e) => setSearchValue(e.target.value)} />
             <Button type='primary' onClick={() => fetchData(searchValue)}>搜索</Button>
             <Button type='primary' danger onClick={() => { setSearchValue(''); }}>重置</Button>
           </Space>
@@ -234,6 +250,7 @@ const UserList: FC = () => {
           columns={columns}
           dataSource={tableData}
           loading={tableLoading}
+          scroll={{ x: 'max-content', y: 'calc(100vh - 400px)' }}
           pagination={{
             current: tableQuery.page,
             pageSize: tableQuery.size,
