@@ -146,3 +146,13 @@ export function getProjectList(params: any): Promise<API.ProjectListResult> {
 export function postUpdateProject(data: any): Promise<API.APIResult<null>> {
   return service({ url: '/staff/token/update', method: 'post', data })
 }
+
+// offerWall
+// offerWall list
+export function getOfferWallList(params: any): Promise<API.OfferWallListResult> {
+  return service({ url: '/staff/offerwall/apply/list', method: 'get', params })
+}
+// offerWall update
+export function postUpdateOfferWall(data: any): Promise<API.APIResult<null>> {
+  return service({ url: '/staff/offerwall/apply/update', method: 'post', data })
+}
