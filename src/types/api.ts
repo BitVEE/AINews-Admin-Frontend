@@ -273,4 +273,20 @@ declare namespace API {
         descriptionEs: string;
         status: 0 | 1 | 2 | 3;
     }
+
+    interface OfferWallListResult {
+        data: OfferWallType[];
+        total: number;
+    }
+
+    interface OfferWallType {
+        id: number;
+        userId: number;
+        walletType: string;
+        walletAddress: string;
+        points: number;
+        status: 0 | 1 | 2;
+        createdAt: string;
+        updatedAt: string;
+    }
 }
