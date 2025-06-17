@@ -272,6 +272,7 @@ declare namespace API {
         descriptionKr: string;
         descriptionEs: string;
         status: 0 | 1 | 2 | 3;
+        isInPumpWebsite: boolean;
     }
 
     interface OfferWallListResult {
