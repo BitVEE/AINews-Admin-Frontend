@@ -50,15 +50,15 @@ const ProjectList: FC = () => {
                 </>
             }
         },
-        {
+        ...(status === 2 ? [{
             title: '是否在Pump',
             dataIndex: 'isInPumpWebsite',
-            align: 'center',
+            align: 'center' as const,
             width: 200,
-            render: (isInPumpWebsite) => {
+            render: (isInPumpWebsite: boolean) => {
                 return <Tag color={isInPumpWebsite ? 'green' : 'red'}>{isInPumpWebsite ? '是' : '否'}</Tag>
             }
-        },
+        }] : []),
         {
             title: '项目名称',
             dataIndex: 'name',
