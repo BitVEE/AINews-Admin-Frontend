@@ -290,4 +290,42 @@ declare namespace API {
         createdAt: string;
         updatedAt: string;
     }
+
+    interface OfferWallOfferDataType {
+        app_desc: string;
+        app_name: string;
+        click_url: string;
+        countries: string;
+        daily_cap: string;
+        offer_id: string;
+        offer_name: string;
+        package_name: string;
+        payout: string;
+        payout_type: string;
+        platform: string;
+        preview_link: string;
+    }
+
+    interface OfferWallOfferType {
+        id: number;
+        sourceOfferId: string;
+        state: number;
+        source: number;
+        platform: string;
+        description: string;
+        url: string;
+        percent: number; // 分成比例，1-100
+        data: OfferWallOfferDataType;
+    }
+
+    interface OfferWallOfferListResult {
+        data: OfferWallOfferType[];
+        total: number;
+    }
+
+
+    interface OfferWallOfferDetailResult {
+        offer: OfferWallOfferType;
+    }
+
 }

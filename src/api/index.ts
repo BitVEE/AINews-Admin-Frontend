@@ -156,3 +156,18 @@ export function getOfferWallList(params: any): Promise<API.OfferWallListResult> 
 export function postUpdateOfferWall(data: any): Promise<API.APIResult<null>> {
   return service({ url: '/staff/offerwall/apply/update', method: 'post', data })
 }
+
+// offerWall project list
+export function getOfferWallOfferList(params: any): Promise<API.OfferWallOfferListResult> {
+  return service({ url: '/staff/offerwall/offer/list', method: 'get', params })
+}
+
+
+export function postOfferDetailById(params: any): Promise<API.OfferWallOfferDetailResult> {
+  return service({ url: '/staff/offerwall/offer/detail', method: 'get', params })
+}
+
+//update offerWall offer
+export function postUpdateOfferWallOffer(data: any): Promise<API.APIResult<null>> {
+  return service({ url: '/staff/offerwall/offer/update', method: 'post', data })
+}
