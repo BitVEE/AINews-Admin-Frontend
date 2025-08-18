@@ -51,6 +51,15 @@ const OfferWallList: FC = () => {
             }
         },
         {
+            title: 'displayName',
+            dataIndex: 'display_name',
+            align: 'center',
+            width: 100,
+            render: (_, record: any) => {
+                return <span>{record.displayName}</span>
+            }
+        },
+        {
             title: '平台',
             dataIndex: 'platform',
             align: 'center',

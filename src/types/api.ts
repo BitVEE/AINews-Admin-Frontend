@@ -316,6 +316,9 @@ declare namespace API {
         url: string;
         percent: number; // 分成比例，1-100
         data: OfferWallOfferDataType;
+        displayName: string;
+        blockSimulator: number;
+        blockVpn: number;
     }
 
     interface OfferWallOfferListResult {

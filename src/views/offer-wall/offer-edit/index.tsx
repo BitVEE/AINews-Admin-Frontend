@@ -14,6 +14,7 @@ import {
   message,
   Select,
   InputNumber,
+  Radio
 } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 
@@ -35,6 +36,9 @@ const InformationEdit: FC = () => {
     platform: '',
     url: '',
     percent: 70,
+    displayName: '',
+    blockSimulator: 0,
+    blockVpn: 0,
     data: {
       app_name: '',
       app_desc: '',
@@ -61,7 +65,10 @@ const InformationEdit: FC = () => {
 
   useEffect(() => {
     if (informationDetail) {
-      form.setFieldsValue({ ...informationDetail })
+      form.setFieldsValue({
+        ...informationDetail,
+        coverImageUrl: informationDetail.url || ''
+      })
     }
   }, [informationDetail, form])
 
@@ -80,7 +87,10 @@ const InformationEdit: FC = () => {
       description: values.description,
       state: 1,
       url: values.coverImageUrl,
-      percent: Number(values.percent)
+      percent: Number(values.percent),
+      displayName: values.displayName,
+      blockSimulator: Number(values.blockSimulator),
+      blockVpn: Number(values.blockVpn)
       // 其他逻辑,
     }).then((res: any) => {
       if (res.code === 0) {
@@ -127,8 +137,11 @@ const InformationEdit: FC = () => {
           url: resData.url,
           thumbUrl: resData.url
         }])
+        // 设置表单的 coverImageUrl 字段
+        form.setFieldValue('coverImageUrl', resData.url)
       } else {
         setListImgs([])
+        form.setFieldValue('coverImageUrl', '')
       }
     }).catch((err: any) => {
       message.error(err.msg || '加载失败')
@@ -192,6 +205,21 @@ const InformationEdit: FC = () => {
                 </Form.Item>
                 <Form.Item label={<h3 style={{ whiteSpace: 'nowrap' }}>OfferName</h3>} name={['data', 'app_name']}>
                   <Input disabled placeholder='请输入内容' value={informationDetail?.data?.app_name} />
+                </Form.Item>
+                <Form.Item label={<h3 style={{ whiteSpace: 'nowrap' }}>App端显示名字</h3>} name='displayName'>
+                  <Input placeholder='请输入内容' value={informationDetail?.displayName} />
+                </Form.Item>
+                <Form.Item label="block模拟器" name='blockSimulator'>
+                  <Radio.Group>
+                    <Radio value={1}>是</Radio>
+                    <Radio value={0}>否</Radio>
+                  </Radio.Group>
+                </Form.Item>
+                <Form.Item label="blockVPN" name='blockVpn'>
+                  <Radio.Group>
+                    <Radio value={1}>是</Radio>
+                    <Radio value={0}>否</Radio>
+                  </Radio.Group>
                 </Form.Item>
 
                 <Form.Item
