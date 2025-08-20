@@ -319,6 +319,7 @@ declare namespace API {
         displayName: string;
         blockSimulator: number;
         blockVpn: number;
+        currentCap: number;
     }
 
     interface OfferWallOfferListResult {

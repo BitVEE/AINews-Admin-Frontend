@@ -77,7 +77,7 @@ const OfferWallList: FC = () => {
             align: 'center',
             width: 100,
             render: (_, record: any) => {
-                return <span>{record.data.daily_cap}</span>
+                return <span>{record.currentCap} / {record.data.daily_cap}</span>
             }
         },
         // {
