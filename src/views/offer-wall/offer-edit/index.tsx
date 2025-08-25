@@ -39,6 +39,7 @@ const InformationEdit: FC = () => {
     displayName: '',
     blockSimulator: 0,
     blockVpn: 0,
+    currentCap: 0,
     data: {
       app_name: '',
       app_desc: '',
