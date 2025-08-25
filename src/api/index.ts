@@ -141,10 +141,23 @@ export function postUpdateAd(data: any): Promise<API.APIResult<null>> {
 export function getProjectList(params: any): Promise<API.ProjectListResult> {
   return service({ url: '/staff/token/list', method: 'get', params })
 }
-
 // update project
 export function postUpdateProject(data: any): Promise<API.APIResult<null>> {
   return service({ url: '/staff/token/update', method: 'post', data })
+}
+
+// project watch
+// project watch list
+export function getProjectWatchList(): Promise<API.ProjectWatchListResult> {
+  return service({ url: '/staff/token_monitor/list', method: 'get' })
+}
+// project watch add
+export function postAddProjectWatch(data: { token: { address: string, startPrice: string }[] }): Promise<API.APIResult<null>> {
+  return service({ url: '/staff/token_monitor/add', method: 'post', data })
+}
+// project watch delete
+export function postDeleteProjectWatch(data: { address: string }): Promise<API.APIResult<null>> {
+  return service({ url: '/staff/token_monitor/delete', method: 'post', data })
 }
 
 // offerWall

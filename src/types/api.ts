@@ -275,6 +275,20 @@ declare namespace API {
         isInPumpWebsite: boolean;
     }
 
+    type ProjectWatchListResult = APIResult<{
+        tokens: ProjectWatchType[];
+    }>
+
+    interface ProjectWatchType {
+        address: string;
+        startPrice: number; // 买入价格
+        lastPrice: number; // 最新价格
+        topPrice: number; // 峰值价格
+        priceChange: number; // 当前价格相对于峰值价格的变化比例，百分数
+        createdAt: string;
+        updatedAt: string;
+    }
+
     interface OfferWallListResult {
         data: OfferWallType[];
         total: number;
