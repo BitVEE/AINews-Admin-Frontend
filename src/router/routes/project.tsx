@@ -5,25 +5,35 @@ import { LazyLoad } from '@/components/LazyLoad'
 
 // information module page
 const ProjectRoute: RouteObject = {
-    path: '/project-list',
-    name: 'ProjectList',
+    path: '/project',
+    name: 'Project',
     element: <LayoutGuard />,
     meta: {
-        title: '项目推荐管理',
+        title: '推荐项目管理',
         icon: 'tree',
         orderNo: 6,
-        hideChildrenInMenu: true
+        hideChildrenInMenu: false
     },
     children: [
         {
-            path: '',
+            path: 'project-list',
             name: 'ProjectList',
             element: LazyLoad(lazy(() => import('@/views/project/project-list'))),
             meta: {
                 title: '项目列表',
                 key: 'project-list'
             }
-        }
+        },
+        // 项目监听列表
+        {
+            path: 'project-watch-list',
+            name: 'ProjectWatchList',
+            element: LazyLoad(lazy(() => import('@/views/project/project-watch-list'))),
+            meta: {
+                title: '项目监听列表',
+                key: 'project-watch-list'
+            }
+        },
     ]
 }
 
