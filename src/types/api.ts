@@ -289,17 +289,152 @@ declare namespace API {
         updatedAt: string;
     }
 
+    // offerWall common stats
+    interface OfferWallCommonStatsResult {
+        msg: string;
+        action: number;
+        data: {
+            totalUserCount: number, // 总用户数
+            totalOfferCount: number, // 总Offer数
+            todayUserCount: number, // 今日注册用户数
+            todayOfferCount: number, // 今日新增Offer数
+            totalOfferRewardPoint: number, // 总完成Offer奖励积分数
+            todayOfferRewardPoint: number, // 今日完成Offer奖励积分数
+            totalWithdrawDonePoint: number, // 总已提现积分数
+            totalWithdrawDoingPoint: number, // 总提现审核中积分数
+            totalOfferDoneCount: number, // 总Offer完成数
+            todayOfferDoneCount: number, // 今日Offer完成数
+            totalOfferDonePercent: number, // 总Offer完成率（百分数）
+        };
+    }
+    // offerWall stats chart
+    interface OfferWallStatsChartResult {
+        msg: string;
+        action: number;
+        data: {
+            timeLine: string[],
+            data: number[]
+        };
+    }
+
+    interface OfferWallUserListResult {
+        code: number;
+        msg: string;
+        action: number;
+        data: {
+            users: OfferWallUserType[];
+            total: number;
+        };
+    }
+    interface OfferWallUserType {
+        id: number;
+        email: string;
+        info: string
+        point: number; // 剩余积分
+        infoState: 0 | 1; // 是否已填写用户信息
+        dailyState: 0 | 1; // 今日是否完成签到,
+        tgGroupState: 0 | 1; // 是否已加TG群
+        inviteCode: string; // 自己的邀请码，初始为空
+        parentInviteCode: string; // 绑定上级的邀请码，初始为空
+        createdAt: string; // 注册时间
+        updatedAt: string; // 最近登录时间
+        lastDaily: string; // 最近一次签到时间
+        inviteCount: number; // 已邀请的用户数
+        invitePoint: number; // 已邀请用户奖励积分数
+        offerDoneCount: number; // 已完成任务数
+        withdrawPoint: number; // 已提现总积分
+        state: 0 | 1 | 2; // 状态
+        ipCountry: string;
+        userCountry: string;
+        channel: string; // 渠道
+        inviteUserList: OfferWallInvitationType[];
+        applyList: OfferWallType[];
+        OfferRecordList: OfferWallOfferRecordType[];
+        dailyList: OfferWallUserActionLogType[];
+        joinTgGroupList: OfferWallUserActionLogType[];
+    }
+    interface OfferWallUserDetailResult {
+        code: number;
+        msg: string;
+        action: number;
+        data: {
+            user: OfferWallUserType;
+        };
+    }
+    interface OfferWallInvitationListResult {
+        code: number;
+        msg: string;
+        data: {
+            data: OfferWallInvitationType[];
+            total: number;
+        };
+    }
+    interface OfferWallInvitationType {
+        parentUserId: number;
+        parentUserEmail: string;
+        childUserId: number;
+        childUserEmail: string;
+        deviceId: string;
+        state: 0 | 1;
+        returnPoint: number;
+        createdAt: string;
+    }
+
+    // offerWall user action log
+    interface OfferWallUserActionLogListResult {
+        code: number;
+        msg: string;
+        action: number;
+        data: {
+            data: OfferWallUserActionLogType[];
+            total: number;
+        };
+    }
+    interface OfferWallUserActionLogType {
+        userId: number;
+        deviceId: string;
+        action: number;
+        point: number;
+        createdAt: string;
+        ipCountry: string;
+        userCountry: string;
+        extra: any;
+    }
+    interface OfferWallOfferRecordListResult {
+        code: number;
+        msg: string;
+        action: number;
+        data: {
+            data: OfferWallOfferRecordType[];
+            total: number;
+        };
+    }
+    interface OfferWallOfferRecordType {
+        id: number;
+        userId: number;
+        deviceId: string;
+        offerId: number;
+        source: number;
+        sourceOfferId: string;
+        name: string;
+        action: number;
+        point: number;
+        progress: number;
+        createdAt: string;
+        updatedAt: string;
+    }
+
     interface OfferWallListResult {
         data: OfferWallType[];
         total: number;
     }
-
     interface OfferWallType {
         id: number;
         userId: number;
         walletType: string;
         walletAddress: string;
-        points: number;
+        email: string;
+        point: number;
         status: 0 | 1 | 2;
         createdAt: string;
         updatedAt: string;

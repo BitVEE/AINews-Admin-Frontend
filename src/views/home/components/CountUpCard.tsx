@@ -13,7 +13,7 @@ interface propState {
 
 const CountUpCard: FC<propState> = props => {
   return (
-    <Card loading={props.loading} bordered={false} bodyStyle={{ padding: 0 }}>
+    <Card style={{ minWidth: "min(240px,100%)" }} loading={props.loading} bordered={false} bodyStyle={{ padding: 0, marginBottom: 5 }}>
       <div className='flex-center-v'>
         <div
           className='flex-center'
@@ -31,6 +31,7 @@ const CountUpCard: FC<propState> = props => {
             start={0}
             end={props.countNum}
             duration={3}
+            decimals={Number((props.countNum + "").split(".")[1]?.length || 0)}
             style={{
               fontSize: '32px',
               color: '#515a6e'

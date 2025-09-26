@@ -16,6 +16,46 @@ const TextEditorRoute: RouteObject = {
     },
     children: [
         {
+            path: 'user',
+            name: 'OfferWallUser',
+            meta: {
+                title: '用户管理',
+                key: 'user'
+            },
+            children: [
+                {
+                    path: 'list',
+                    name: 'OfferWallUserList',
+                    element: LazyLoad(lazy(() => import('@/views/offer-wall/user/list'))),
+                    meta: {
+                        title: '用户列表',
+                        key: 'user-list'
+                    }
+                }
+
+                , {
+                    path: 'detail',
+                    name: 'OfferWallUserDetail',
+                    element: LazyLoad(lazy(() => import('@/views/offer-wall/user/detail'))),
+                    loader: () => ({ id: 0 }),
+                    meta: {
+                        title: '用户详情',
+                        key: 'user-detail',
+                        hideMenu: true,
+                    }
+                },
+                {
+                    path: 'relation',
+                    name: 'OfferWallUserRelation',
+                    element: LazyLoad(lazy(() => import('@/views/offer-wall/user/relation'))),
+                    meta: {
+                        title: '用户关系表',
+                        key: 'user-relation'
+                    }
+                },
+            ]
+        },
+        {
             path: 'offer-wall-project-list',
             name: 'OfferWallProjectList',
             element: LazyLoad(lazy(() => import('@/views/offer-wall/offer-wall-project-list'))),

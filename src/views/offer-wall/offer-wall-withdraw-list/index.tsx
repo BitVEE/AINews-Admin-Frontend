@@ -8,11 +8,13 @@ import {
     Space,
     Modal,
     message,
-    Select
+    Select,
+    Popover
 } from 'antd'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import { getOfferWallList, postUpdateOfferWall } from '@/api'
 import dayjs from 'dayjs'
+import { Link } from 'react-router-dom'
 
 const OfferWallList: FC = () => {
     const [tableLoading, setTableLoading] = useState(false)
@@ -32,12 +34,25 @@ const OfferWallList: FC = () => {
             sorter: (a, b) => a.id - b.id
         },
         {
-            title: '用户ID',
+            title: '用户信息',
             dataIndex: 'userId',
             align: 'center',
             width: 150,
-            render: (id) => {
-                return <Tag color='blue'>{id.toString()}</Tag>
+            render: (id, record) => {
+
+                const content = (
+                    <div>
+                        <p>用户ID: {id.toString()}</p>
+                        <p>邮箱: {record.email}</p>
+                        <br />
+                        <Button type='primary'>
+                            <Link to={`/offer-wall/user/detail`} state={{ id: record.userId }}>查看用户详情</Link>
+                        </Button>
+                    </div>
+                )
+                return <Popover content={content}>
+                    <Tag color='blue'>{id.toString() + ' ' + record.email}</Tag>
+                </Popover>
             }
         },
         {

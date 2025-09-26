@@ -1,88 +1,25 @@
 import type { EChartsOption } from 'echarts'
-
-export const countUpData = [
-  {
-    title: '今日点击',
-    icon: 'location',
-    count: 682,
-    color: '#1890ff'
-  },
-  {
-    title: '新增用户',
-    icon: 'person',
-    count: 259,
-    color: '#fa541c'
-  },
-  {
-    title: '信息发送',
-    icon: 'message',
-    count: 1262,
-    color: '#faad14'
-  },
-  {
-    title: '点赞统计',
-    icon: 'like',
-    count: 508,
-    color: '#13c2c2'
-  },
-  {
-    title: '累计收藏',
-    icon: 'heart',
-    count: 379,
-    color: '#722ed1'
-  }
-]
-
-export const ringOptions: EChartsOption = {
-  tooltip: {
-    trigger: 'item'
-  },
-  legend: {
-    bottom: 0,
-    left: 'center'
-  },
-  series: [
-    {
-      color: ['#1890ff', '#fa541c', '#faad14', '#13c2c2', '#722ed1'],
-      name: '访问来源',
-      type: 'pie',
-      radius: ['40%', '70%'],
-      center: ['50%', '45%'],
-      avoidLabelOverlap: false,
-      itemStyle: {
-        borderRadius: 10,
-        borderColor: '#fff',
-        borderWidth: 2
-      },
-      label: {
-        show: false,
-        position: 'center'
-      },
-      emphasis: {
-        label: {
-          show: true,
-          fontSize: '12',
-          fontWeight: 'bold'
-        }
-      },
-      labelLine: {
-        show: false
-      },
-      data: [
-        { value: 1620, name: '直接访问' },
-        { value: 1169, name: '邮件营销' },
-        { value: 986, name: '联盟广告' },
-        { value: 624, name: '视频广告' },
-        { value: 2758, name: '搜索引擎' }
-      ],
-      animationType: 'scale',
-      animationEasing: 'exponentialInOut',
-      animationDelay: function () {
-        return Math.random() * 100
-      }
-    }
-  ]
+// countUpDataType
+export type countUpDataType = {
+  title: string
+  icon: string
+  count: number
+  color: string
 }
+
+export const countUpData: countUpDataType[] = [
+  { title: '总用户数', icon: 'location', count: 0, color: '#1890ff' },
+  { title: '今日注册用户数', icon: 'person', count: 0, color: '#fa541c' },
+  { title: '总Offer数', icon: 'compo', count: 0, color: '#52c41a' },
+  { title: '今日新增Offer数', icon: 'person', count: 0, color: '#722ed1' },
+  { title: '总完成Offer奖励积分数', icon: 'flow', count: 0, color: '#faad14' },
+  { title: '今日完成Offer奖励积分数', icon: 'person', count: 0, color: '#13c2c2' },
+  { title: '总已提现积分数', icon: 'heart', count: 0, color: '#eb2f96' },
+  { title: '总提现审核中积分数', icon: 'table', count: 0, color: '#fadb14' },
+  { title: '总Offer完成数', icon: 'tree', count: 0, color: '#a0d911' },
+  { title: '今日Offer完成数', icon: 'hints', count: 0, color: '#fa8c16' },
+  { title: '总Offer完成率(%)', icon: 'like', count: 0, color: '#1890ff' }
+]
 
 
 export const lineOptions: EChartsOption = {
@@ -112,7 +49,7 @@ export const lineOptions: EChartsOption = {
   yAxis: {
     type: 'value',
     max: value => {
-      return Math.ceil(value.max / 100) * 100 + 300
+      return value.max + Math.ceil((value.max + value.min) / 2)
     }
   },
   label: {
@@ -125,7 +62,7 @@ export const lineOptions: EChartsOption = {
   series: [
     {
       type: 'line',
-      name: '访问量',
+      name: '数量',
       color: ['#722ed1'],
       smooth: true,
       data: [782, 925, 1196, 812, 328, 223, 1080]
