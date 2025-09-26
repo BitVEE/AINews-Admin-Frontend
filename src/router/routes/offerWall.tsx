@@ -31,9 +31,8 @@ const TextEditorRoute: RouteObject = {
                         title: '用户列表',
                         key: 'user-list'
                     }
-                }
-
-                , {
+                },
+                {
                     path: 'detail',
                     name: 'OfferWallUserDetail',
                     element: LazyLoad(lazy(() => import('@/views/offer-wall/user/detail'))),
@@ -49,6 +48,34 @@ const TextEditorRoute: RouteObject = {
                     meta: {
                         title: '用户关系表',
                         key: 'user-relation'
+                    }
+                },
+            ]
+        },
+        {
+            path: 'action',
+            name: 'OfferWallUserAction',
+            meta: {
+                title: '积分日志',
+                key: 'action'
+            },
+            children: [
+                {
+                    path: 'list',
+                    name: 'OfferWallUserActionList',
+                    element: LazyLoad(lazy(() => import('@/views/offer-wall/action/list'))),
+                    meta: {
+                        title: '所有积分日志',
+                        key: 'action-list',
+                    }
+                },
+                {
+                    path: 'list-wubian',
+                    name: 'OfferWallUserActionListWubian',
+                    element: LazyLoad(lazy(() => import('@/views/offer-wall/action/list-wubian'))),
+                    meta: {
+                        title: '悟变任务日志',
+                        key: 'action-list-wubian',
                     }
                 },
             ]

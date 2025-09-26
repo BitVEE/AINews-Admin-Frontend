@@ -292,7 +292,6 @@ declare namespace API {
     // offerWall common stats
     interface OfferWallCommonStatsResult {
         msg: string;
-        action: number;
         data: {
             totalUserCount: number, // 总用户数
             totalOfferCount: number, // 总Offer数
@@ -310,7 +309,6 @@ declare namespace API {
     // offerWall stats chart
     interface OfferWallStatsChartResult {
         msg: string;
-        action: number;
         data: {
             timeLine: string[],
             data: number[]
@@ -320,7 +318,6 @@ declare namespace API {
     interface OfferWallUserListResult {
         code: number;
         msg: string;
-        action: number;
         data: {
             users: OfferWallUserType[];
             total: number;
@@ -356,7 +353,6 @@ declare namespace API {
     interface OfferWallUserDetailResult {
         code: number;
         msg: string;
-        action: number;
         data: {
             user: OfferWallUserType;
         };
@@ -378,13 +374,14 @@ declare namespace API {
         state: 0 | 1;
         returnPoint: number;
         createdAt: string;
+        childUserCreatedAt: string;
+        childUserUpdatedAt: string;
     }
 
     // offerWall user action log
     interface OfferWallUserActionLogListResult {
         code: number;
         msg: string;
-        action: number;
         data: {
             data: OfferWallUserActionLogType[];
             total: number;
@@ -403,7 +400,6 @@ declare namespace API {
     interface OfferWallOfferRecordListResult {
         code: number;
         msg: string;
-        action: number;
         data: {
             data: OfferWallOfferRecordType[];
             total: number;
