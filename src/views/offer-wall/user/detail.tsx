@@ -149,6 +149,22 @@ const OfferUserDetail: FC = () => {
             title: '返佣奖励(积分)',
             dataIndex: 'returnPoint',
             key: 'returnPoint',
+        },
+        {
+            title: '下级用户注册时间',
+            dataIndex: 'childUserCreatedAt',
+            key: 'childUserCreatedAt',
+            render: (createdAt) => {
+                return dayjs(createdAt).format('YYYY-MM-DD HH:mm:ss')
+            }
+        },
+        {
+            title: '下级用户最近登录时间',
+            dataIndex: 'childUserUpdatedAt',
+            key: 'childUserUpdatedAt',
+            render: (updatedAt) => {
+                return dayjs(updatedAt).format('YYYY-MM-DD HH:mm:ss')
+            }
         }
     ]
     const applyColumns: ColumnsType<API.OfferWallType> = [
