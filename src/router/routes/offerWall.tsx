@@ -37,11 +37,9 @@ const TextEditorRoute: RouteObject = {
                     path: 'detail',
                     name: 'OfferWallUserDetail',
                     element: LazyLoad(lazy(() => import('@/views/offer-wall/user/detail'))),
-                    loader: () => ({ id: 0 }),
                     meta: {
                         title: '用户详情',
                         key: 'user-detail',
-                        hideMenu: true,
                     }
                 },
                 {

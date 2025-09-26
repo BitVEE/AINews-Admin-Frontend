@@ -46,7 +46,7 @@ const OfferWallList: FC = () => {
                         <p>邮箱: {record.email}</p>
                         <br />
                         <Button type='primary'>
-                            <Link to={`/offer-wall/user/detail`} state={{ id: record.userId }}>查看用户详情</Link>
+                            <Link to={`/offer-wall/user/detail?id=${record.userId}`}>查看用户详情</Link>
                         </Button>
                     </div>
                 )
