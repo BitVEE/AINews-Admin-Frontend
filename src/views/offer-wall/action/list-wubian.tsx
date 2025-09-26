@@ -34,9 +34,21 @@ const OfferWallUserActionWubianList: FC = () => {
             key: 'email',
         },
         {
+            title: '设备ID',
+            dataIndex: 'deviceId',
+            key: 'deviceId',
+        },
+        {
             title: '任务ID',
-            dataIndex: 'id',
-            key: 'id',
+            dataIndex: 'offerId',
+            key: 'offerId',
+            width: 100,
+        },
+        {
+            title: '源任务ID',
+            dataIndex: 'sourceOfferId',
+            key: 'sourceOfferId',
+            width: 100,
         },
         {
             title: '任务名称',

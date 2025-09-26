@@ -36,6 +36,12 @@ const OfferWallUserActionList: FC = () => {
             dataIndex: 'email',
             align: 'center',
         },
+
+        {
+            title: '设备ID',
+            dataIndex: 'deviceId',
+            key: 'deviceId',
+        },
         {
             title: '获得积分',
             dataIndex: 'point',
@@ -49,6 +55,15 @@ const OfferWallUserActionList: FC = () => {
             width: 100,
             render: (extra) => {
                 return <span>{extra?.offerId || '-'}</span>
+            }
+        },
+        {
+            title: '源任务ID',
+            dataIndex: 'extra',
+            align: 'center',
+            width: 100,
+            render: (extra) => {
+                return <span>{extra?.sourceOfferId || '-'}</span>
             }
         },
         {
