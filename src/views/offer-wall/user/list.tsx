@@ -73,7 +73,7 @@ const OfferWallUserList: FC = () => {
             fixed: 'right',
             render: (state, record) => {
                 return <Button type='primary'>
-                    <Link to={`/offer-wall/user/detail`} state={{ id: record.id }}>详情</Link>
+                    <Link to={`/offer-wall/user/detail?id=${record.id}`}>详情</Link>
                 </Button>
             }
         }

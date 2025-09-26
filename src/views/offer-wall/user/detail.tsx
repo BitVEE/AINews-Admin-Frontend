@@ -15,7 +15,8 @@ import { getOfferWallUserDetail } from '@/api'
 import dayjs from 'dayjs'
 import { ColumnsType } from 'antd/es/table'
 const OfferUserDetail: FC = () => {
-    const id = useLocation()?.state?.id
+    const query = useLocation()?.search
+    const id = new URLSearchParams(query).get('id')
     const [userDetail, setUserDetail] = useState<API.OfferWallUserType | null>(null)
     const [offerRecordList, setOfferRecordList] = useState<API.OfferWallOfferRecordType[]>([])
     const [dailyList, setDailyList] = useState<API.OfferWallUserActionLogType[]>([])
@@ -120,7 +121,7 @@ const OfferUserDetail: FC = () => {
             key: 'childUserId',
             render: (childUserId) => {
                 return <Button type='primary'>
-                    <Link to={`/offer-wall/user/detail`} state={{ id: childUserId }}>
+                    <Link to={`/offer-wall/user/detail?id=${childUserId}`}>
                         查看ID: {childUserId} 详情
                     </Link>
                 </Button>
