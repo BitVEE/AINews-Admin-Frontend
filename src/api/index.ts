@@ -161,26 +161,53 @@ export function postDeleteProjectWatch(data: { address: string }): Promise<API.A
 }
 
 // offerWall
-// offerWall list
+
+// offerWall index
+export function getOfferWallCommonStats(): Promise<API.OfferWallCommonStatsResult> {
+  return service({ url: '/staff/offerwall/dashboard/common_stats', method: 'get' })
+}
+export function getOfferWallUserStatsChart(params: any): Promise<API.OfferWallStatsChartResult> {
+  return service({ url: '/staff/offerwall/dashboard/user_stats_chart', method: 'get', params })
+}
+export function getOfferWallOfferStatsChart(params: any): Promise<API.OfferWallStatsChartResult> {
+  return service({ url: '/staff/offerwall/dashboard/offer_stats_chart', method: 'get', params })
+}
+
+// offerWall user
+export function getOfferWallUserList(params: any): Promise<API.OfferWallUserListResult> {
+  return service({ url: '/staff/offerwall/user/list', method: 'get', params })
+}
+export function getOfferWallUserDetail(params: any): Promise<API.OfferWallUserDetailResult> {
+  return service({ url: '/staff/offerwall/user/detail', method: 'get', params })
+}
+// offerWall invitation
+export function getOfferWallInvitationList(params: any): Promise<API.OfferWallInvitationListResult> {
+  return service({ url: '/staff/offerwall/user/invitation_list', method: 'get', params })
+}
+
+// offerWall points 
+export function getOfferWallUserActionLogList(params: any): Promise<API.OfferWallUserActionLogListResult> {
+  return service({ url: '/staff/offerwall/user/action_log_list', method: 'get', params })
+}
+export function getOfferWallOfferRecordList(params: any): Promise<API.OfferWallOfferRecordListResult> {
+  return service({ url: '/staff/offerwall/offer/record_list', method: 'get', params })
+}
+
+// offerWall apply
 export function getOfferWallList(params: any): Promise<API.OfferWallListResult> {
   return service({ url: '/staff/offerwall/apply/list', method: 'get', params })
 }
-// offerWall update
 export function postUpdateOfferWall(data: any): Promise<API.APIResult<null>> {
   return service({ url: '/staff/offerwall/apply/update', method: 'post', data })
 }
 
-// offerWall project list
+// offerWall project
 export function getOfferWallOfferList(params: any): Promise<API.OfferWallOfferListResult> {
   return service({ url: '/staff/offerwall/offer/list', method: 'get', params })
 }
-
-
 export function postOfferDetailById(params: any): Promise<API.OfferWallOfferDetailResult> {
   return service({ url: '/staff/offerwall/offer/detail', method: 'get', params })
 }
-
-//update offerWall offer
 export function postUpdateOfferWallOffer(data: any): Promise<API.APIResult<null>> {
   return service({ url: '/staff/offerwall/offer/update', method: 'post', data })
 }

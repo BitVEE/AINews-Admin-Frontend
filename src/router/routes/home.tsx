@@ -9,7 +9,7 @@ const HomeRoute: RouteObject = {
   name: 'Home',
   element: <LayoutGuard />,
   meta: {
-    title: '数据统计',
+    title: '积分墙数据汇总',
     icon: 'home',
     affix: true,
     orderNo: 1,
@@ -21,7 +21,7 @@ const HomeRoute: RouteObject = {
       name: 'HomePage',
       element: LazyLoad(lazy(() => import('@/views/home'))),
       meta: {
-        title: '数据统计',
+        title: '积分墙数据汇总',
         key: 'home',
         icon: 'home',
         orderNo: 1,
