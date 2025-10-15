@@ -20,7 +20,7 @@ const OfferWallList: FC = () => {
     const [tableData, setTableData] = useState<API.OfferWallOfferType[]>([])
     const [tableTotal, setTableTotal] = useState<number>(0)
     const [tableQuery, setTableQuery] = useState<API.PageState>({ page: 1, size: 20 })
-    const [state, setState] = useState<0 | 1 | 2>(1)
+    const [state, setState] = useState<-1 | 0 | 1 | 2>(-1)
 
     // columns
     const columns: ColumnsType<API.OfferWallOfferType> = [
@@ -80,15 +80,15 @@ const OfferWallList: FC = () => {
                 return <span>{record.currentCap} / {record.data.daily_cap}</span>
             }
         },
-        // {
-        //     title: 'state',
-        //     dataIndex: 'state',
-        //     align: 'center',
-        //     width: 100,
-        //     render: (_, record: any) => {
-        //         return <span>{record.state}</span>
-        //     }
-        // },
+        {
+            title: 'state',
+            dataIndex: 'state',
+            align: 'center',
+            width: 100,
+            render: (_, record: any) => {
+                return <span>{record.state === 0 ? <Tag color="orange">未开始</Tag> : record.state === 1 ? <Tag color="green">已开始</Tag> : <Tag color="red">已删除</Tag>}</span>
+            }
+        },
 
         // {
         //     title: '注册时间',
@@ -134,7 +134,7 @@ const OfferWallList: FC = () => {
     // fetch data
     async function fetchData() {
         setTableLoading(true)
-        getOfferWallOfferList({ ...tableQuery, source: 1 }).then((res: any) => {
+        getOfferWallOfferList({ ...tableQuery, source: 1, state: state !== -1 ? state : undefined }).then((res: any) => {
             // getOfferWallList({ ...tableQuery, state, source: 1 }).then((res: any) => {
             if (res.code === 0) {
                 const { data, total } = res.data
@@ -204,19 +204,20 @@ const OfferWallList: FC = () => {
 
     return (
         <>
-            {/* <Card bordered={false}>
+            <Card bordered={false}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', overflow: 'scroll', padding: '10px 0', gap: '10px' }}>
                     <Space>
                         <h3 style={{ whiteSpace: 'nowrap' }}>选择状态:</h3>
                         <Select value={state} onChange={(value) => { setState(value) }}>
-                            <Select.Option value={0}>已拒绝</Select.Option>
-                            <Select.Option value={1}>待审批</Select.Option>
-                            <Select.Option value={2}>已通过</Select.Option>
+                            <Select.Option value={-1}>所有状态</Select.Option>
+                            <Select.Option value={0}>未开始</Select.Option>
+                            <Select.Option value={1}>已开始</Select.Option>
+                            <Select.Option value={2}>已删除</Select.Option>
                         </Select>
                     </Space>
                 </div>
             </Card>
-            <br /> */}
+            <br />
             <Card bordered={false}>
                 <Table
                     rowKey='id'
