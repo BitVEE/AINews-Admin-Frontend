@@ -477,4 +477,18 @@ declare namespace API {
         offer: OfferWallOfferType;
     }
 
+    // GARP
+    interface GARPListResult {
+        data: GARPType[];
+        total: number;
+    }
+    interface GARPType {
+        id: number;
+        source: string;
+        email: string;
+        note: string;
+        extra: any; // 额外信息，json格式
+        created_at: string;
+    }
+
 }

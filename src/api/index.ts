@@ -211,3 +211,9 @@ export function postOfferDetailById(params: any): Promise<API.OfferWallOfferDeta
 export function postUpdateOfferWallOffer(data: any): Promise<API.APIResult<null>> {
   return service({ url: '/staff/offerwall/offer/update', method: 'post', data })
 }
+
+// GARP
+// garp list
+export function getGARPList(params: any): Promise<API.GARPListResult> {
+  return service({ url: '/staff/user_contact/list', method: 'get', params: { ...params, source: "GARP" } })
+}
