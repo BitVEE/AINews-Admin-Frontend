@@ -52,7 +52,7 @@ const GARPList: FC = () => {
     },
     {
       title: '创建时间',
-      dataIndex: 'createdAt',
+      dataIndex: 'created_at',
       align: 'center',
       render: (createdAt) => {
         return <span>{dayjs(createdAt).format('YYYY-MM-DD HH:mm:ss')}</span>
