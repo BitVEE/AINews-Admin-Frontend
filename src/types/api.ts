@@ -434,6 +434,8 @@ declare namespace API {
         status: 0 | 1 | 2;
         createdAt: string;
         updatedAt: string;
+        failReason?: string;
+        transactionHash?: string;
     }
 
     interface OfferWallOfferDataType {

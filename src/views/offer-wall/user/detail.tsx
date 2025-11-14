@@ -25,6 +25,7 @@ const OfferUserDetail: FC = () => {
     const [applyList, setApplyList] = useState<API.OfferWallType[]>([])
     const [loading, setLoading] = useState<boolean>(false)
     const [searchId, setSearchId] = useState<string>('')
+
     useEffect(() => {
         if (id) {
             setSearchId(id)
@@ -242,7 +243,18 @@ const OfferUserDetail: FC = () => {
                             columns={offerRecordColumns}
                             dataSource={offerRecordList}
                             loading={loading}
-                            pagination={false}
+                            pagination={{
+                                total: userDetail?.OfferRecordList?.length || 0,
+                                pageSize: 10,
+                                onChange: (page, size) => {
+                                    const newOfferRecordList = userDetail?.OfferRecordList || []
+                                    setOfferRecordList(newOfferRecordList.slice((page - 1) * size, page * size))
+                                },
+                                showSizeChanger: false,
+                                showTotal: (total, range) => {
+                                    return `共 ${total} 条`
+                                },
+                            }}
                         />}
                         {dailyList.length > 0 && <Table
                             rowKey='createdAt'
@@ -250,7 +262,18 @@ const OfferUserDetail: FC = () => {
                             columns={dailyColumns}
                             dataSource={dailyList}
                             loading={loading}
-                            pagination={false}
+                            pagination={{
+                                total: userDetail?.dailyList?.length || 0,
+                                pageSize: 10,
+                                onChange: (page, size) => {
+                                    const newDailyList = userDetail?.dailyList || []
+                                    setDailyList(newDailyList.slice((page - 1) * size, page * size))
+                                },
+                                showSizeChanger: false,
+                                showTotal: (total, range) => {
+                                    return `共 ${total} 条`
+                                },
+                            }}
                         />}
                         {joinTgGroupList.length > 0 && <Table
                             rowKey='createdAt'
@@ -266,7 +289,18 @@ const OfferUserDetail: FC = () => {
                             columns={inviteUserColumns}
                             dataSource={inviteUserList}
                             loading={loading}
-                            pagination={false}
+                            pagination={{
+                                total: userDetail?.inviteUserList?.length || 0,
+                                pageSize: 10,
+                                onChange: (page, size) => {
+                                    const newInviteUserList = userDetail?.inviteUserList || []
+                                    setInviteUserList(newInviteUserList.slice((page - 1) * size, page * size))
+                                },
+                                showSizeChanger: false,
+                                showTotal: (total, range) => {
+                                    return `共 ${total} 条`
+                                },
+                            }}
                         />}
                         {applyList.length > 0 && <Table
                             rowKey='id'
@@ -274,7 +308,18 @@ const OfferUserDetail: FC = () => {
                             columns={applyColumns}
                             dataSource={applyList}
                             loading={loading}
-                            pagination={false}
+                            pagination={{
+                                total: userDetail?.applyList?.length || 0,
+                                pageSize: 10,
+                                onChange: (page, size) => {
+                                    const newApplyList = userDetail?.applyList || []
+                                    setApplyList(newApplyList.slice((page - 1) * size, page * size))
+                                },
+                                showSizeChanger: false,
+                                showTotal: (total, range) => {
+                                    return `共 ${total} 条`
+                                },
+                            }}
                         />}
                     </Card>
                 </>

@@ -9,9 +9,11 @@ import {
     Modal,
     message,
     Select,
-    Popover
+    Popover,
+    Form,
+    Input
 } from 'antd'
-import { ExclamationCircleOutlined } from '@ant-design/icons'
+
 import { getOfferWallList, postUpdateOfferWall } from '@/api'
 import dayjs from 'dayjs'
 import { Link } from 'react-router-dom'
@@ -22,6 +24,13 @@ const OfferWallList: FC = () => {
     const [tableTotal, setTableTotal] = useState<number>(0)
     const [tableQuery, setTableQuery] = useState<API.PageState>({ page: 1, size: 20 })
     const [state, setState] = useState<0 | 1 | 2>(1)
+    const [passModalVisible, setPassModalVisible] = useState(false)
+    const [rejectModalVisible, setRejectModalVisible] = useState(false)
+    const [currentId, setCurrentId] = useState<number | null>(null)
+    const [transactionHash, setTransactionHash] = useState('')
+    const [rejectReason, setRejectReason] = useState('')
+    const [confirmLoading, setConfirmLoading] = useState(false)
+    const [form] = Form.useForm()
 
     // columns
     const columns: ColumnsType<API.OfferWallType> = [
@@ -67,6 +76,18 @@ const OfferWallList: FC = () => {
             align: 'center',
             width: 300
         },
+        ...(state === 2 ? [{
+            title: '交易哈希',
+            dataIndex: 'transactionHash',
+            align: 'center' as const,
+            width: 300
+        }] : []),
+        ...(state === 0 ? [{
+            title: '拒绝原因',
+            dataIndex: 'failReason',
+            align: 'center' as const,
+            width: 300
+        }] : []),
         {
             title: '积分',
             dataIndex: 'point',
@@ -142,44 +163,81 @@ const OfferWallList: FC = () => {
         }
     }, [tableQuery.page, tableQuery.size, state])
 
-    // batch black
+    // 拒绝审核
     function handleNotPass(id: number) {
-        if (id) {
-            Modal.confirm({
-                title: '此操作将拒绝审核，ID:（' + id + '）是否继续?',
-                icon: <ExclamationCircleOutlined rev={undefined} />,
-                okType: 'danger',
-                okText: '拒绝',
-                cancelText: '取消',
-                onOk() {
-                    handleUpdateOfferWall(id, 0)
-                },
-                onCancel() {
-                    console.log('Cancel')
-                }
+        setCurrentId(id)
+        setRejectModalVisible(true)
+    }
+
+    // 通过审核
+    function handlePass(id: number) {
+        setCurrentId(id)
+        setPassModalVisible(true)
+    }
+
+    // 确认拒绝审核
+    function handleConfirmReject() {
+        if (!rejectReason.trim()) {
+            message.error('请选择拒绝原因')
+            return
+        }
+
+        if (currentId) {
+            setConfirmLoading(true)
+            handleUpdateOfferWall(currentId, 0, rejectReason).finally(() => {
+                setConfirmLoading(false)
+            }).then(() => {
+                setRejectModalVisible(false)
+                setRejectReason('')
+                setCurrentId(null)
+                form.resetFields()
             })
         }
     }
 
-    // batch restore
-    function handlePass(id: number) {
-        Modal.confirm({
-            title: '此操作将通过审核，ID:（' + id + '）是否继续?',
-            icon: <ExclamationCircleOutlined rev={undefined} />,
-            okText: '通过',
-            cancelText: '取消',
-            onOk() {
-                handleUpdateOfferWall(id, 2)
-            },
-            onCancel() {
-                console.log('Cancel')
-            }
-        })
+    // 确认通过审核
+    function handleConfirmPass() {
+        if (!transactionHash.trim()) {
+            message.error('请输入交易hash')
+            return
+        }
+
+        if (currentId) {
+            setConfirmLoading(true)
+            handleUpdateOfferWall(currentId, 2, transactionHash).finally(() => {
+                setConfirmLoading(false)
+            }).then(() => {
+                setPassModalVisible(false)
+                setTransactionHash('')
+                setCurrentId(null)
+                form.resetFields()
+            })
+        }
     }
 
-    // update user is active
-    function handleUpdateOfferWall(id: number, state: 0 | 1 | 2) {
-        return postUpdateOfferWall({ id, state }).then((res: any) => {
+    // 取消操作
+    function handleCancel() {
+        setPassModalVisible(false)
+        setRejectModalVisible(false)
+        setTransactionHash('')
+        setRejectReason('')
+        setCurrentId(null)
+        form.resetFields()
+    }
+
+    // update offer wall status
+    function handleUpdateOfferWall(id: number, state: 0 | 1 | 2, extraData?: string) {
+        const params: any = { id, state }
+
+        // 根据状态传入不同的参数
+        if (state === 2 && extraData) {
+            // 通过审核时传入交易hash
+            params.transactionHash = extraData
+        } else if (state === 0 && extraData) {
+            // 拒绝审核时传入拒绝原因
+            params.failReason = extraData
+        }
+        return postUpdateOfferWall(params).then((res: any) => {
             if (res.code === 0) {
                 message.success('操作成功')
                 fetchData()
@@ -222,6 +280,58 @@ const OfferWallList: FC = () => {
                     }}
                 />
             </Card>
+            <Modal
+                title="通过提现审核"
+                open={passModalVisible}
+                onOk={handleConfirmPass}
+                onCancel={handleCancel}
+                confirmLoading={confirmLoading}
+                okText="确认通过"
+                cancelText="取消"
+            >
+                <Form form={form} layout="vertical">
+                    <Form.Item
+                        label="交易Hash"
+                        required
+                        name="transactionHash"
+                        rules={[{ required: true, message: '请输入交易hash', validateTrigger: ['change', 'blur', 'submit'] }]}
+                    >
+                        <Input
+                            value={transactionHash}
+                            placeholder="请输入交易hash"
+                            onChange={(e) => setTransactionHash(e.target.value)}
+                        />
+                    </Form.Item>
+                </Form>
+            </Modal>
+            <Modal
+                title="拒绝提现审核"
+                open={rejectModalVisible}
+                onOk={handleConfirmReject}
+                onCancel={handleCancel}
+                confirmLoading={confirmLoading}
+                okText="确认拒绝"
+                cancelText="取消"
+                okType="danger"
+            >
+                <Form form={form} layout="vertical">
+                    <Form.Item
+                        label="拒绝原因"
+                        required
+                        name="rejectReason"
+                        rules={[{ required: true, message: '请选择拒绝原因', validateTrigger: ['change', 'blur', 'submit'] }]}
+                    >
+                        <Select
+                            placeholder="请选择拒绝原因"
+                            value={rejectReason}
+                            onChange={(value) => setRejectReason(value)}
+                        >
+                            <Select.Option value="Inactive referral included">Inactive referral included</Select.Option>
+                            <Select.Option value="Violation of User Agreement">Violation of User Agreement</Select.Option>
+                        </Select>
+                    </Form.Item>
+                </Form>
+            </Modal>
         </>
     )
 }
