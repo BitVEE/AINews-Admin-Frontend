@@ -121,9 +121,10 @@
   "bugs": {
     "url": "https://github.com/baimingxuan/react-admin-design/issues"
   },
+  "packageManager": "pnpm@10.20.0",
   "engines": {
-    "node": ">=16",
-    "pnpm": ">=8"
+    "node": "23.x",
+    "pnpm": "10.20.0"
   },
   "lint-staged": {
     "{src,mock,build}/**/*.{js,ts,tsx}": [
